@@ -57,12 +57,14 @@ $(function(){
         return true;
     });
     
+    var normalizeCoord = function(n) {
+      return +(n / scale).toFixed(2);  
+    };
+    
     canvasjq.click(function (evt) {
            var position = getMouseCoords(canvasjq[0], evt);
-           points.push(Math.round(position.x / scale));
-           points.push(Math.round(position.y / scale));
-           $('.points').html(JSON.stringify(points));
+           points.push(normalizeCoord(position.x));
+           points.push(normalizeCoord(position.y));
+           $('.points').html(JSON.stringify(points, null, 2));
         });
-    
-    
 });
