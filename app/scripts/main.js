@@ -26,7 +26,9 @@ $(function(){
       pointsToDraw.push(newPoint);
     }
 
-    ctx.fillStyle = "red";
+    ctx.fillStyle = 'rgba(255,0,0,0.5)';
+    ctx.strokeStyle = 'rgba(255,10, 10, 0.5)';
+
     var start = pointsToDraw[0];
     ctx.beginPath();
     ctx.moveTo(start.x, start.y);
@@ -38,6 +40,8 @@ $(function(){
     }
 
     ctx.stroke();
+    ctx.closePath()
+    ctx.fill()
   };
 
   var drawSpriteOnCanvas = function (file) {
