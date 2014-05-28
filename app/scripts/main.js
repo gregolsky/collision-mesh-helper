@@ -12,29 +12,28 @@ $(function(){
   var fileInput = $('input[name=spriteFile]');
   var scale = scaleInput.val();
   var points = [];
-
-  var denormalizeCoord = function (n) {
-    return n * scale;
-  };
-
-  var denormalizePoint = function (p) {
-    return { x: denormalizeCoord(p.x), y: denormalizeCoord(p.y) };
-  }; 
+  var newPoint = null;
 
   var drawPointsOnCanvas = function (ctx) {
 
-    if (!points || points.length < 2) {
+    if (!points || !points.length) {
         return;
     }
 
+    var pointsToDraw = points.slice();
+
+    if (newPoint) {
+      pointsToDraw.push(newPoint);
+    }
+
     ctx.fillStyle = "red";
-    var start = points[0];
+    var start = pointsToDraw[0];
     ctx.beginPath();
     ctx.moveTo(start.x, start.y);
 
-    for (var i = 1; i < points.length; i++) {
+    for (var i = 1; i < pointsToDraw.length; i++) {
 
-      var p = points[i];
+      var p = pointsToDraw[i];
       ctx.lineTo(p.x, p.y);
     }
 
@@ -136,14 +135,26 @@ $(function(){
     return JSON.stringify(result, null, 2);
   };
 
-  canvasjq.click(function (evt) {
+  var canvasMousedown = false;
+  canvasjq.mousedown(function (evt) {
     var position = getMouseCoords(canvasjq[0], evt);
-    points.push(position); 
+    newPoint = position;
+    canvasMousedown = true;
+  })
+  .mouseup(function (evt) {
+    points.push(newPoint); 
+    canvasMousedown = false;
+    newPoint = null;
+    requestAnimationFrame(drawSelectedSprite);
     $('.points').html(formatPointsPhaser());
-    drawSelectedSprite();
   })
   .mousemove(function (evt) {
     var position = getMouseCoords(canvasjq[0], evt);
+    if (canvasMousedown) {
+      newPoint = position;
+      requestAnimationFrame(drawSelectedSprite);
+    }
+
     $('.currentCoords').html(position.x.toFixed(2) + ', ' + position.y.toFixed(2));
   });
 
