@@ -39,9 +39,18 @@ $(function(){
       ctx.lineTo(p.x, p.y);
     }
 
-    ctx.stroke();
     ctx.closePath()
+    ctx.stroke();
     ctx.fill()
+
+    ctx.strokeStyle = 'rgba(0, 200, 10, 0.7)';
+
+    pointsToDraw.forEach(function (p, i) {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 0.5, 0, 2 * Math.PI, false);
+      ctx.stroke();
+      ctx.closePath()
+    });
   };
 
   var drawSpriteOnCanvas = function (file) {
