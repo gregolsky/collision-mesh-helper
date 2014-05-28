@@ -13,4 +13,5 @@ body {
 
 canvas.sprite { 
     border: 1px solid #ccc;
+    margin: 1em;
 }
